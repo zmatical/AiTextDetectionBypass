@@ -1,3 +1,4 @@
+import os
 import time, re, sys, random, string, pyperclip
 from colorama import Fore, init
 from tempmail import EMail
@@ -64,11 +65,15 @@ def main(purpose_choice, readability_choice, article_file_path):
                 WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="vplpzd"]/div[7]/div[2]'))).click()
 
                 # Enter email and password
-                WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div/div/div/div/div[2]/div[3]/div/input'))).send_keys(str(email))
+                email_input = WebDriverWait(driver, 20).until(
+                    EC.presence_of_element_located((By.XPATH, '/html/body/div[4]/div[2]/div/div/div/div/div/div[2]/div[3]/div/input'))
+                )
+                driver.execute_script("arguments[0].scrollIntoView(true);", email_input)
+                email_input.send_keys(str(email))
                 driver.find_element(By.XPATH, '//*[@id="pws"]').send_keys(password)
 
                 # Check terms and conditions and click register
-                driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div/div/div/div/div[2]/div[5]/button').click()
+                driver.find_element(By.XPATH, '/html/body/div[4]/div[2]/div/div/div/div/div/div[2]/div[5]/button').click()
                 driver.find_element(By.XPATH, '//*[@id="bSignup"]').click()
 
                 # Wait for the confirmation email to arrive
@@ -124,15 +129,15 @@ def main(purpose_choice, readability_choice, article_file_path):
             except Exception as e:
                 print(f"{Fore.RED}Error during registration: {e}")
             finally:
-                driver.quit
+                os.system("taskkill /f /im chromedriver.exe /T")
                 
         print(f"{Fore.GREEN}\nArticle has been paraphrased successfully.")
 
     except Exception as e:
         print(f"{Fore.RED}Error during article submission: {e}")
         raise
-        
-'''
+
+
 if __name__ == "__main__":
     try:
         print(f'{Fore.GREEN}1. General Writing\n2. Essay\n3. Article\n4. Marketing Material\n5. Story\n6. Cover letter\n7. Report\n8. Business Material\n9. Legal Material\n')
@@ -144,4 +149,3 @@ if __name__ == "__main__":
     except:
         print(f"{Fore.RED}Aborting ...")
         sys.exit()
-'''

@@ -21,7 +21,7 @@ def extract_verify_link(text):
     else:
         return None
 
-def main(purpose_choice, readability_choice, article_file_path):
+def main(purpose_choice, readability_choice, article_file_path): 
     try:
         with open(article_file_path, 'r', encoding="utf8") as article_file:
             article_text = article_file.read()
